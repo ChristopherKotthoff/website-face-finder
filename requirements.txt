@@ -3,3 +3,6 @@ onnxruntime-gpu #CUDA 12.x
 onnxruntime-gpu --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-11/pypi/simple/ #CUDA 11.8
 
 insightface
+requests
+beautifulsoup4
+lxml

@@ -1,0 +1,8 @@
+outputs/*
+**/__pycache__/*
+image*.jpg
+output.jpg
+state.txt
+.insightface/*
+tofind.jpeg
+.vscode/*
