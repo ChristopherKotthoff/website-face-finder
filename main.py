@@ -36,6 +36,7 @@ def argument_handling():
     # Add arguments
     parser.add_argument("--headless", action="store_true", help="Interactions are via command line only. --input is required.", required=False)
     parser.add_argument("--restore", action="store_true", help="Restore state from the state.txt file", required=False)
+    parser.add_argument("--save_all", action="store_true", help="Save even the non-relevant pictures with faces on it and their similarity score, even if it's not good", required=False)
     parser.add_argument("--input", type=str, help="Face image to look for", required=False)
     parser.add_argument("--output", type=str, help="Output folder", default=tempfile.gettempdir(), required=False)
     parser.add_argument("--domain", type=str, help="The domain to be considered", required=False)
@@ -104,10 +105,10 @@ def argument_handling():
     # Create output directory
     os.makedirs(output_dir)
 
-    return args.headless, args.input, output_dir, args.domain, args.restore
+    return args.headless, args.input, output_dir, args.domain, args.restore, args.save_all
 
 if __name__ == "__main__":
-    headless, input_file, output_dir, domain, restore = argument_handling()
+    headless, input_file, output_dir, domain, restore, save_all = argument_handling()
 
     print(f"Headless mode: \t\t{headless}")
     print(f"Input file: \t\t{input_file}")
@@ -129,7 +130,7 @@ if __name__ == "__main__":
         if iter % 10 == 0:
             scraper.save_state()
         try:
-            if scraper.len(scraper.image_queue) < 1000:
+            if len(scraper.image_queue) < 1000:
                 new_imgs, new_links = scraper.search(20)
                 print(f"Found {new_imgs} new images and {new_links} new links.")
             for _ in tqdm(range(len(scraper.image_queue))):
@@ -151,7 +152,8 @@ if __name__ == "__main__":
                     max_similarity = max(max_similarity, similarity)
                     draw_bounding_box(img, stranger_face, similarity)
                 
-                cv2.imwrite(f'outputs/{img_url.replace("/",".")}', img)
+                if save_all:
+                    cv2.imwrite(f'outputs/{img_url.replace("/",".")}', img)
                 if max_similarity > 0.3:
                     print(f"Found a promising face with similarity {max_similarity:.2f} in {img_found_url}.")
                     cv2.imwrite(f'outputs/promising/{img_url.replace("/",".")}', img)
