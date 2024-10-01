@@ -128,7 +128,14 @@ if __name__ == "__main__":
         scraper.load_state()
     
     # get embedding of face to be searched for
-    face_embedding = recognizer.get_faces(cv2.imread(input_file))[0].embedding
+    face_embedding = recognizer.get_faces(cv2.imread(input_file))
+    if len(face_embedding) == 0:
+        print("No face found in input image. Exiting...")
+        exit(1)
+    elif len(face_embedding) > 1:
+        print("Multiple faces found in input image. Please provide an image with only one face. Exiting...")
+        exit(1)
+    face_embedding = face_embedding[0].embedding # extract main face
     
     consecutive_errors = 0
     iter = 0

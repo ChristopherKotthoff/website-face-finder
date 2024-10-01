@@ -1,4 +1,5 @@
-# website-face-finder
+# Face Recognizer on Websites
+
 Find a specific face by similarity search to an input image over a given website domain. The tool works by doing some scraping and then some image analyzing alternatingly. It scrapes the website in a breadth-first manner, collecting image-urls and further links pointing to the same website. Then, the the images are iterated over to find similar faces to the input image.
 
 Similarity search is done with a pre-trained lightweight model called ['buffalo_sc' from insightface](https://github.com/deepinsight/insightface/tree/master/python-package) which uses [onnxruntime](https://onnxruntime.ai/docs/get-started/with-python.html) in the backend. CPU is quite doable. Model can be changed to to a better one via argument but is not needed.
