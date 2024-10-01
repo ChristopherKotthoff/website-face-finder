@@ -3,8 +3,8 @@ import insightface
 import numpy as np
 
 class Recognizer:
-    def __init__(self):
-        self.model = insightface.app.FaceAnalysis(name='buffalo_sc', root='.insightface', providers=['CUDAExecutionProvider'])
+    def __init__(self, model_name='buffalo_sc'):
+        self.model = insightface.app.FaceAnalysis(name=model_name, root='.insightface')
         self.model.prepare(ctx_id=0)
 
     def get_faces(self, img):
