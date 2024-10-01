@@ -82,7 +82,25 @@ class WebScraper:
                 self.registered_urls = set(f.readline().strip().split())
                 self.images_urls = set(f.readline().strip().split())
                 self.urls_to_visit = deque(f.readline().strip().split())
-                self.image_queue = deque([tuple(line.split()) for line in f.readline().strip().split()])
+                
+                temp = []
+                elements = f.readline().strip().split()
+
+                i = 0
+                while i < len(elements):
+                    image = []
+                    while not elements[i].endswith(('.jpg', '.jpeg', '.png')):
+                        image.append(elements[i])
+                        i = i+1
+                    image.append(elements[i])
+                    image_url = ' '.join(image)
+                    if len(image) > 1:
+                        print(f"from {image} created {image_url}")
+                    
+                    temp.append((image_url, elements[i+1]))
+                    i = i+2
+
+                self.image_queue = deque(temp)
 
     def search(self, concurrent=1):
         if not self.urls_to_visit:
@@ -113,7 +131,7 @@ class WebScraper:
             if self.image_queue:
                 return self.image_queue.popleft()
             else:
-                return None
+                return None, None
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ from helpers import Recognizer, WebScraper, draw_bounding_box
 def get_image_from_url(url):
     try:
         # Send a GET request to the image URL
-        response = requests.get(url)
+        response = requests.get(url, timeout=3)
         response.raise_for_status()  # Raise an exception if the request was unsuccessful
 
         # Convert the response content into a numpy array
@@ -129,10 +129,11 @@ if __name__ == "__main__":
         iter += 1
         if iter % 10 == 0:
             scraper.save_state()
+            print("State saved.")
         try:
             if len(scraper.image_queue) < 1000:
                 new_imgs, new_links = scraper.search(20)
-                print(f"Found {new_imgs} new images and {new_links} new links.")
+                print(f"new images: {new_imgs}/{len(scraper.image_queue)}, new links:{new_links}/{len(scraper.urls_to_visit)}")
             for _ in tqdm(range(len(scraper.image_queue))):
                 img_url, img_found_url = scraper.get_next_image_info()
                 
