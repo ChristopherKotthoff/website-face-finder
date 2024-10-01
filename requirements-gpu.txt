@@ -1,0 +1,5 @@
+onnxruntime-gpu #CUDA 12.x
+insightface
+requests
+beautifulsoup4
+lxml
